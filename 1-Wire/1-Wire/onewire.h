@@ -30,6 +30,7 @@
 #define OW_NO_DEVICE	3
 
 #define OW_NO_READ		0xff
+#define OW_READ		0x00
 
 #define OW_READ_SLOT	0xff
 //-----------------------------------------------------------------------------

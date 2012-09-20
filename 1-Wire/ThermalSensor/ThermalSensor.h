@@ -3,6 +3,7 @@
 #define __THERMALSENSOR_H
 /* Includes ------------------------------------------------------------------*/
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
 #include "OneWire.h"
