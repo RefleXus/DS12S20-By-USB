@@ -123,6 +123,11 @@ int8_t SendData(int argc, const char* const* argv)
 												CommandToSend.NumByteToSend,
 												CommandToSend.ReadFlag);
 	
+	for( i = 0; i < CommandToSend.NumByteForRead ; i++ )
+	{
+		printf("Byte Number %d :%d\n\r",(i+1),CommandToSend.DataForRead[i]);
+	}
+	
 	switch (OW_Status)
 	{
 		case OW_OK: 					printf("Command completed successfully\r\n");
