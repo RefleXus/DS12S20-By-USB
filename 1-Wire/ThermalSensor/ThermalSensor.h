@@ -8,6 +8,7 @@
 #include <string.h>
 #include "OneWire.h"
 #include "MyLib.h"
+#include "arm_math.h" 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/

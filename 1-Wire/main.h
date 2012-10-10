@@ -32,13 +32,13 @@
 #include <string.h>
 #include "RTC_App.h"
 #include "MyLib.h"
+#include "microrl.h"
 #include "ThermalSensor.h"
 	
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-void TimingDelay_Decrement(void);
 int ConsoleExecute (int argc, const char* const* argv);
 
 #endif /* __MAIN_H */

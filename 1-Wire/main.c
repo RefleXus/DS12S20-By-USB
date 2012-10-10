@@ -42,10 +42,9 @@
 __ALIGN_BEGIN USB_OTG_CORE_HANDLE  USB_OTG_dev __ALIGN_END;
 
 GPIO_InitTypeDef GPIO_InitStructure;
-static __IO uint32_t TimingDelay;
 
 /* Private function prototypes -----------------------------------------------*/
-void Delay(__IO uint32_t nTime);
+void cortexm4f_enable_fpu(void);
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -72,6 +71,8 @@ int main(void)
 
 	RCC_GetClocksFreq(&RCC_Clocks);
   SysTick_Config(SystemCoreClock / 1000);
+  
+  cortexm4f_enable_fpu();
 		
 	
 	/* USB configuration */
@@ -107,31 +108,6 @@ int main(void)
   }
 }
 
-/**
-  * @brief  Inserts a delay time.
-  * @param  nTime: specifies the delay time length, in milliseconds.
-  * @retval None
-  */
-void Delay(__IO uint32_t nTime)
-{ 
-  TimingDelay = nTime;
-
-  while(TimingDelay != 0);
-}
-
-/**
-  * @brief  Decrements the TimingDelay variable.
-  * @param  None
-  * @retval None
-  */
-void TimingDelay_Decrement(void)
-{
-  if (TimingDelay != 0x00)
-  { 
-    TimingDelay--;
-  }
-}
-
 int ConsoleExecute (int argc, const char* const* argv)
 {
 
@@ -152,6 +128,12 @@ int ConsoleExecute (int argc, const char* const* argv)
 	
 	return 0;
 }
+
+void cortexm4f_enable_fpu() {
+    /* set CP10 and CP11 Full Access */
+    SCB->CPACR |= ((3UL << 10*2)|(3UL << 11*2));
+}
+
 
 #ifdef  USE_FULL_ASSERT
 

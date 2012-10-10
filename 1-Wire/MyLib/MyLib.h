@@ -11,4 +11,6 @@
 /* Exported functions ------------------------------------------------------- */
 uint32_t strtoint(const char* s1);
 uint8_t	crc8(const uint8_t *data, const uint8_t len);
+void Delay(volatile uint32_t nTime);
+void TimingDelay_Decrement(void);
 #endif
