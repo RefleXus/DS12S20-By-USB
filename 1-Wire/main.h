@@ -39,7 +39,7 @@
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-int ConsoleExecute (int argc, const char* const* argv);
+int ConsoleExecute (int targc, const char* const* targv);
 
 #endif /* __MAIN_H */
 

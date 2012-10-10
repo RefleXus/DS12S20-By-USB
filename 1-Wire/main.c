@@ -42,9 +42,13 @@
 __ALIGN_BEGIN USB_OTG_CORE_HANDLE  USB_OTG_dev __ALIGN_END;
 
 GPIO_InitTypeDef GPIO_InitStructure;
-
+volatile uint8_t ConsoleDataReady = 0;
+volatile uint8_t argc;
+char *argv[_COMMAND_TOKEN_NMB];
+char commandline[_COMMAND_LINE_LEN];
 /* Private function prototypes -----------------------------------------------*/
 void cortexm4f_enable_fpu(void);
+int CommandsExecute(int argc, const char* const* argv);
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -88,7 +92,9 @@ int main(void)
 	
   while (1)
   {
-
+    if(ConsoleDataReady)
+        CommandsExecute( argc, argv );
+    
     STM_EVAL_LEDToggle(LED3);		
 		Delay(100);
 		STM_EVAL_LEDToggle(LED3);
@@ -108,7 +114,23 @@ int main(void)
   }
 }
 
-int ConsoleExecute (int argc, const char* const* argv)
+int ConsoleExecute (int targc, const char* const* targv)
+{
+  
+  if(!ConsoleDataReady)
+  {
+    ConsoleDataReady = 1;
+    argc = targc;
+    commandline = "";
+    for( i = 0 ; i < argc; i++ )
+    {
+      argv[i] = strncat( commandline , targv[i]);
+    }
+  }
+  return 0;
+}
+
+int CommandsExecute (int argc, const char* const* argv)
 {
 
 	if(argc >= 1 && (!strcmp(argv[0],"rtc")))
@@ -125,7 +147,7 @@ int ConsoleExecute (int argc, const char* const* argv)
 	{
 		printf("Command %s is unknown \r\n",argv[0]);
 	}
-	
+	ConsoleDataReady = 0;
 	return 0;
 }
 
