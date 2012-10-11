@@ -207,12 +207,6 @@ static int split (microrl_t * pThis, int limit)
 
 
 //*****************************************************************************
-__inline static void print_prompt (microrl_t * pThis)
-{
-	pThis->print (pThis->prompt_str);
-}
-
-//*****************************************************************************
 __inline static void terminal_backspace (microrl_t * pThis)
 {
 		pThis->print ("\033[D \033[D");

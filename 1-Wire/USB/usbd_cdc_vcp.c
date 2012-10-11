@@ -189,6 +189,11 @@ static uint16_t VCP_DataRx (uint8_t* Buf, uint32_t Len)
 	return USBD_OK;
 }
 
+void Print_Promt(void)
+{
+  print_prompt(prl);
+}
+
 void print (const char * str)
 {
 	printf ("%s", str);

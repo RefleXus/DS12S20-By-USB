@@ -116,15 +116,18 @@ int main(void)
 
 int ConsoleExecute (int targc, const char* const* targv)
 {
+  uint8_t i, frag_len;
   
   if(!ConsoleDataReady)
   {
     ConsoleDataReady = 1;
     argc = targc;
-    commandline = "";
+    commandline[0] = '\0';
+    frag_len = 0;
     for( i = 0 ; i < argc; i++ )
     {
-      argv[i] = strncat( commandline , targv[i]);
+      argv[i] = strcpy( (commandline + frag_len), targv[i] );
+      frag_len += strlen(targv[i]) + 1;
     }
   }
   return 0;
@@ -133,7 +136,8 @@ int ConsoleExecute (int targc, const char* const* targv)
 int CommandsExecute (int argc, const char* const* argv)
 {
 
-	if(argc >= 1 && (!strcmp(argv[0],"rtc")))
+	printf("\r");
+  if(argc >= 1 && (!strcmp(argv[0],"rtc")))
 	{
 		printf("Found allowed command %s \r\n",argv[0]);
 		RTC_Exec(--argc,++argv);
@@ -148,6 +152,9 @@ int CommandsExecute (int argc, const char* const* argv)
 		printf("Command %s is unknown \r\n",argv[0]);
 	}
 	ConsoleDataReady = 0;
+  
+  Print_Promt();
+  
 	return 0;
 }
 

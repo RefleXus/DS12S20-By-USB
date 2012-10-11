@@ -61,6 +61,7 @@ uint16_t VCP_DataTx   (uint8_t* Buf, uint32_t Len);
 static uint16_t VCP_DataRx   (uint8_t* Buf, uint32_t Len);
 uint32_t fscan                  (void);
 extern int execute (int argc, const char* const* argv);
+void Print_Promt(void);
 
 #endif /* __USBD_CDC_VCP_H */
 

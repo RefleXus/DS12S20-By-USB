@@ -186,7 +186,7 @@ int8_t MeasureTemp( int argc, const char* const* argv )
   if(SendData( 2, CommandsArray ) != OW_OK )
     return OW_Status;
 
-  for ( i=0; i < UINT16_MAX; i++ );
+  Delay(750);
   
   CommandToSend_StructInit( &CommandToSend );
 
@@ -203,7 +203,7 @@ int8_t MeasureTemp( int argc, const char* const* argv )
   T = T - (float32_t)0.25
       +(float32_t)(16-CommandToSend.DataForRead[6])/16;
 
-  printf("Temperature is %f\r\n",  T );
+  printf("Temperature is %2.3f\r\n",  T );
 
   return OW_Status;
 }
