@@ -66,18 +66,18 @@ uint8_t RTC_Exec(int argc, const char* const* argv)
 				RTC_TimeStructure.RTC_Seconds = strtoint(argv[3]);
 				if(RTC_SetTime(RTC_Format_BIN, &RTC_TimeStructure) == ERROR)
 				{
-					printf("\n\r	>> !! RTC Set Time failed. !! <<\n\r");
+					printf("\r\n	>> !! RTC Set Time failed. !! <<\r\n");
 				}
 				else
 				{
-					printf("\n\r	>> !! RTC Set Time success. !! <<\n\r");
+					printf("\r\n	>> !! RTC Set Time success. !! <<\r\n");
 					RTC_TimeShow();
 				}
 			}
 			else
 			{
-				printf("Incorrect argument number!\n\r");
-				printf("\n\r  /s command format: \"/s Hours Minutes Seconds\"\n\r");
+				printf("Incorrect argument number!\r\n");
+				printf("\r\n  /s command format: \"/s Hours Minutes Seconds\"\r\n");
 			}
 		}
 		else if(!strcmp(argv[0],"/sd"))
@@ -91,18 +91,18 @@ uint8_t RTC_Exec(int argc, const char* const* argv)
 				RTC_SetTime(RTC_Format_BIN, &RTC_TimeStructure);
 				if(RTC_SetDate(RTC_Format_BIN, &RTC_DateStructure) == ERROR)
 				{
-					printf("\n\r>> !! RTC Set Date failed. !! <<\n\r");
+					printf("\r\n>> !! RTC Set Date failed. !! <<\r\n");
 				} 
 				else
 				{
-					printf("\n\r>> !! RTC Set Date success. !! <<\n\r");
+					printf("\r\n>> !! RTC Set Date success. !! <<\r\n");
 					RTC_DateShow();
 				}
 			}
 			else
 			{
-				printf("Incorrect argument number!\n\r");
-				printf("\n\r  /sd command format: \"/sd WeekDay(1-7) Date(1-31) Mounth(1-12) Year(0-99)\"\n\r");
+				printf("Incorrect argument number!\r\n");
+				printf("\r\n  /sd command format: \"/sd WeekDay(1-7) Date(1-31) Mounth(1-12) Year(0-99)\"\r\n");
 			}
 		}
 		else if(!strcmp(argv[0],"/d") && (argc == 1))
@@ -117,15 +117,15 @@ void RTC_DateShow(void)
 {
   /* Get the current Date */
   RTC_GetDate(RTC_Format_BIN, &RTC_DateStructure);
-  printf("\n\r============== Current Date Display ============================\n\r");
-  printf("\n\r  The current date (WeekDay-Date-Month-Year) is:  %0.2d-%0.2d-%0.2d-%0.2d \n\r", RTC_DateStructure.RTC_WeekDay, RTC_DateStructure.RTC_Date, RTC_DateStructure.RTC_Month, RTC_DateStructure.RTC_Year);
+  printf("\r\n============== Current Date Display ============================\r\n");
+  printf("\r\n  The current date (WeekDay-Date-Month-Year) is:  %0.2d-%0.2d-%0.2d-%0.2d \r\n", RTC_DateStructure.RTC_WeekDay, RTC_DateStructure.RTC_Date, RTC_DateStructure.RTC_Month, RTC_DateStructure.RTC_Year);
 }
 void RTC_TimeShow(void)
 {
 	/* Get the current Time */
 	RTC_GetTime(RTC_Format_BIN, &RTC_TimeStructure);
-	printf("\n\r============== Current Time Display ============================\n\r");
-	printf("\n\r  The current time is:  %0.2d:%0.2d:%0.2d \n\r",
+	printf("\r\n============== Current Time Display ============================\r\n");
+	printf("\r\n  The current time is:  %0.2d:%0.2d:%0.2d \r\n",
 							RTC_TimeStructure.RTC_Hours,
 							RTC_TimeStructure.RTC_Minutes,
 							RTC_TimeStructure.RTC_Seconds);

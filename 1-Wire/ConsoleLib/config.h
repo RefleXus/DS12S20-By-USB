@@ -80,10 +80,10 @@ already initialize and ready to print message */
 
 /*
 New line symbol */
-#define _ENDL_CR
+#define _ENDL_CRLF
 
 #ifdef _ENDL_CR
-	#define ENDL "\r\n"
+	#define ENDL "\r"
 #elif defined (_ENDL_CRLF)
 	#define ENDL "\r\n"
 #elif defined (_ENDL_LF)
