@@ -139,12 +139,10 @@ int CommandsExecute (int argc, const char* const* argv)
 	printf("\r");
   if(argc >= 1 && (!strcmp(argv[0],"rtc")))
 	{
-		printf("Found allowed command %s \r\n",argv[0]);
 		RTC_Exec(--argc,++argv);
 	}
 	else if((argc >= 1 && (!strcmp(argv[0],"temp"))))
 	{
-		printf("Found allowed command %s \r\n",argv[0]);
 		Temp_Exec(--argc,++argv);
 	}
 	else

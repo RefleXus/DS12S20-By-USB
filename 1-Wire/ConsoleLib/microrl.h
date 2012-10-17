@@ -107,10 +107,8 @@ void microrl_set_sigint_callback (microrl_t * pThis, void (*sigintf)(void));
 void microrl_insert_char (microrl_t * pThis, int ch);
 
 // insert promt to cmdline (for example call in usart RX interrupt)
-//*****************************************************************************
 __inline static void print_prompt (microrl_t * pThis)
 {
 	pThis->print (pThis->prompt_str);
 }
-
 #endif

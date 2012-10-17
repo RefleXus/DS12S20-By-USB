@@ -324,7 +324,6 @@ void microrl_init (microrl_t * pThis, void (*print) (const char *))
 	print_prompt (pThis);
 #endif
 }
-
 //*****************************************************************************
 void microrl_set_complete_callback (microrl_t * pThis, char ** (*get_completion)(int, const char* const*))
 {
