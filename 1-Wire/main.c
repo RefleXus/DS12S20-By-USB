@@ -135,8 +135,7 @@ int ConsoleExecute (int targc, const char* const* targv)
 
 int CommandsExecute (int argc, const char* const* argv)
 {
-
-	printf("\r");
+  printf("\r\n");
   if(argc >= 1 && (!strcmp(argv[0],"rtc")))
 	{
 		RTC_Exec(--argc,++argv);

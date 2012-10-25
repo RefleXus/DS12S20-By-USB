@@ -29,6 +29,11 @@ const ExecFlagTableDef ExecFlagTable[4] = { "-s", SendDataNoRead,
                                             "-r", SendDataOnlyRead,
                                             "-m", MesureTempSkipAdress};
 CommandToSendDef CommandToSend = { NULL, NULL, OW_NO_READ, NULL, NULL, OW_SEND_RESET, NO_SILENT };
+char * const TermAdress [5][8] = {{"16", "240", "126", "91", "2", "8", "0", "51"},
+                                 {"16",  "248", "160", "91", "2", "8", "0", "110"},
+                                 {"16",   "77", "123", "91", "2", "8", "0", "172"},
+                                 {"16",  "180",  "32", "91", "2", "8", "0", "129"},
+                                 {"16",   "93", "144", "91", "2", "8", "0", "78"}};
 /* Private function prototypes -----------------------------------------------*/
 int8_t Device_Search( void );
 int8_t SendData( void );
@@ -107,9 +112,10 @@ int8_t SendData(void)
   
   OW_Status = OW_Send(	CommandToSend.Reset,
                         CommandToSend.DataToSend,
-                        CommandToSend.NumByteToSend,
+                        CommandToSend.NumByteToSend 
+                        +CommandToSend.NumByteForRead,
                         CommandToSend.DataForRead,
-                        CommandToSend.NumByteToSend,
+                        CommandToSend.NumByteForRead,
                         CommandToSend.ReadStartByte);
   CheckOwStatus(OW_Status);
 
@@ -126,18 +132,46 @@ int8_t SendData(void)
 
 int8_t MeasureTemp( int argc, const char* const* argv )
 {
-  uint8_t OW_Status = OW_ERROR;
-  char const *CommandsArray[2]; 
+  uint8_t OW_Status = OW_ERROR, i;
+  int8_t numTermo;
+  char *CommandsArray[10];
+  uint8_t isNoAdress = 1;
   
-  if(argc != 0)
+  if(argc != 0 && argc != 1)
   {
     printf("Must be no arguments with -m flag\r\n");
     return OW_Status;
   }
-  //CommandToSend.OutputOption = SILENT;
-  CommandsArray[0] = "204";
-  CommandsArray[1] = "68";
-  CommandToSend.NumByteToSend = 2;  
+  if( argc != 0)
+      isNoAdress = 0;
+  
+  CommandToSend.OutputOption = SILENT;
+  if( isNoAdress )
+  {
+    CommandsArray[0] = "204";
+    CommandsArray[1] = "68";
+    CommandToSend.NumByteToSend = 2;
+  }
+  else
+  {
+    numTermo = atoi(argv[0])-1;
+    argv ++;
+    if( numTermo >= 0 && numTermo < 5)
+    {
+      CommandsArray[0] = "85";
+      for(i = 0; i < 8; i++)
+      {
+        CommandsArray[i+1] = TermAdress[numTermo][i];
+      }
+      CommandsArray[9] = "68";
+      CommandToSend.NumByteToSend = 10;
+    }
+    else
+    {
+      printf("Number TermoSensor must be > 0 and < 5\r\n");
+      return OW_Status;
+    }
+  }
   if(MemoryAllotment() == OW_ERROR)
     return OW_ERROR;
   MemoryFill( CommandToSend.NumByteToSend, CommandsArray  );
@@ -148,12 +182,21 @@ int8_t MeasureTemp( int argc, const char* const* argv )
   Delay(750);
   
   CommandToSend_StructInit( &CommandToSend );
-  //CommandToSend.OutputOption = SILENT;
-  CommandsArray[0] = "204";
-  CommandsArray[1] = "190";
-  CommandToSend.NumByteToSend = 2;
+  CommandToSend.OutputOption = SILENT;
+
+  if( isNoAdress )
+  {
+    CommandsArray[1] = "190";
+    CommandToSend.NumByteToSend = 2;
+    CommandToSend.ReadStartByte = 2;
+  }
+  else
+  {
+    CommandsArray[9] = "190";
+    CommandToSend.NumByteToSend = 10;
+    CommandToSend.ReadStartByte = 10;
+  }  
   CommandToSend.NumByteForRead = 9;
-  CommandToSend.ReadStartByte = 2;
   if(MemoryAllotment() == OW_ERROR)
     return OW_ERROR;
   MemoryFill( CommandToSend.NumByteToSend, CommandsArray  );
@@ -179,7 +222,7 @@ ExecFlagDef FindExecFlag(int argc, const char* const* argv)
     return DeviceSearch;
 }
 
-void CommandToSend_StructInit(CommandToSendDef *CommandToSend)
+__inline void CommandToSend_StructInit(CommandToSendDef *CommandToSend)
 {
   CommandToSend->DataForRead = NULL;
   CommandToSend->NumByteForRead = NULL;
@@ -190,7 +233,7 @@ void CommandToSend_StructInit(CommandToSendDef *CommandToSend)
   CommandToSend->OutputOption = NO_SILENT;
 }
 
-uint8_t MemoryAllotment(void)
+__inline uint8_t MemoryAllotment(void)
 {
   CommandToSend.DataToSend = calloc( (CommandToSend.NumByteToSend + CommandToSend.NumByteForRead), sizeof(uint8_t) );
   if (!CommandToSend.DataToSend)
@@ -211,7 +254,7 @@ uint8_t MemoryAllotment(void)
   return OW_OK;
 }
 
-void MemoryFill(int argc, const char* const* argv)
+__inline void MemoryFill(int argc, const char* const* argv)
 {  
   uint8_t i;
 
@@ -228,7 +271,8 @@ void MemoryFill(int argc, const char* const* argv)
   }
 }
 
-void MemoryFree(void)
+
+__inline void MemoryFree(void)
 {
   free( CommandToSend.DataToSend );
   if( CommandToSend.ReadStartByte != OW_NO_READ )
@@ -237,7 +281,8 @@ void MemoryFree(void)
   CommandToSend.DataForRead = NULL;
 }
 
-void CheckOwStatus( uint8_t OW_Status )
+
+__inline void CheckOwStatus( uint8_t OW_Status )
 {
   switch (OW_Status)
   {
@@ -252,7 +297,7 @@ void CheckOwStatus( uint8_t OW_Status )
   }
 }
 
-uint8_t CRCCheck (void)
+__inline uint8_t CRCCheck (void)
 {
   if(CommandToSend.ReadStartByte != OW_NO_READ)
     if(crc8(CommandToSend.DataForRead,CommandToSend.NumByteForRead))
@@ -263,7 +308,8 @@ uint8_t CRCCheck (void)
    return OW_OK;
 }
 
-void PrintReadData(void)
+
+__inline void PrintReadData(void)
 {
   uint8_t i;
 
@@ -272,7 +318,7 @@ void PrintReadData(void)
       printf("Byte Number %d :%d\n\r",(i+1),CommandToSend.DataForRead[i]);
 }
 
-void PrintTemperature(void)
+__inline void PrintTemperature(void)
 {
   float32_t T = 0;
   T = CommandToSend.DataForRead[0] + (CommandToSend.DataForRead[1] << 8);

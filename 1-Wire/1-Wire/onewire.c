@@ -100,7 +100,7 @@ uint8_t OW_Init() {
 		GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF;
 		GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_InitStruct.GPIO_OType = GPIO_OType_OD;
-    GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_UP;
+    GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
 
 		GPIO_Init(GPIOA, &GPIO_InitStruct);
 
